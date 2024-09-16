@@ -1,0 +1,21 @@
+# Virtual environment
+venv/
+*.pyc
+__pycache__/
+
+# Editor configurations
+.vscode/
+settings.json
+
+# Python environment files
+.python-version
+
+# Migrations (exclude compiled migration files)
+migrations/versions/*.pyc
+
+# Logs
+*.log
+
+# Ignore temporary files (e.g., OS-specific)
+.DS_Store
+.idea/
