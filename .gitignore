@@ -19,3 +19,6 @@ migrations/versions/*.pyc
 # Ignore temporary files (e.g., OS-specific)
 .DS_Store
 .idea/
+
+# Private files
+private/
