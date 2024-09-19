@@ -9,18 +9,18 @@ class BuiltinJobsParser:
             return {}
 
         for part in parsed_email.walk():
-            if self.is_html_part(part):
-                html_body = self.get_html_body(part)
-                return self.parse_html_body(html_body)
+            if self._is_html_part(part):
+                html_body = self._get_html_body(part)
+                return self._parse_html_body(html_body)
         return {}
 
-    def is_html_part(self, part):
+    def _is_html_part(self, part):
         return part.get_content_type() == "text/html"
 
-    def get_html_body(self, part):
+    def _get_html_body(self, part):
         return part.get_payload(decode=True).decode()
 
-    def parse_html_body(self, html_body):
+    def _parse_html_body(self, html_body):
         soup = BeautifulSoup(html_body, 'html.parser')
 
         jobs = []
@@ -29,13 +29,13 @@ class BuiltinJobsParser:
         job_elements = soup.find_all('td', style=lambda x: x and 'font-family:Verdana' in x)
 
         for job_element in job_elements:
-            job_info = self.get_job_info(job_element)
+            job_info = self._get_job_info(job_element)
             if job_info:
                 jobs.append(job_info)
 
         return jobs
 
-    def get_job_info(self, job_element):
+    def _get_job_info(self, job_element):
         """Extract job information from a given job_element."""
 
         # Get the job URL

@@ -63,5 +63,3 @@ class POP3Client:
             'subject': subject,
             'parsed_body': parsed_body
         })
-
-
