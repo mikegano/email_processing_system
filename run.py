@@ -15,12 +15,16 @@ def main():
     # 2. Fetch emails
     emails = pop3_client.fetch_emails()
 
+    pop3_client.display_jobs(emails)
+
     """
     # 3. Process emails
     for email in emails:
         job_posting = email_processor.process_email(email)
         save_to_database(job_posting, db_session)
     """
+    # consider storing and deleting emails after processing
+    # also will need to use URL to get job details
 
     # 4. Close resources
     # db_session.close()

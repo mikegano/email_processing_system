@@ -45,7 +45,6 @@ class POP3Client:
 
     def _body_parse(self, email_list, i):
         """Retrieves and parses the email using the selected parser."""
-
         try:
             raw_email = b"\n".join(self.mailbox.retr(i)[1])
             parsed_email = email_parser.BytesParser().parsebytes(raw_email)
@@ -53,13 +52,22 @@ class POP3Client:
             print(f"Error retrieving or parsing email {i}: {e}")
             return
 
-        # Extract metadata like subject
         subject = parsed_email.get('subject', 'No Subject')
-        print(f"Subject: {subject}")
 
         # Use the specific body parser for email body content
-        parsed_body = self.body_parser.parse_email(parsed_email)
+        job_info_list = self.body_parser.parse_email(parsed_email)
         email_list.append({
             'subject': subject,
-            'parsed_body': parsed_body
+            'job_info_list': job_info_list  # Clarified to signify it's a list of jobs
         })
+
+    def display_jobs(self, emails):
+        """Displays job information for each email in a readable format."""
+        for email in emails:
+            print(f"Subject: {email['subject']}")
+            for job in email['job_info_list']:
+                print(f"  Job Title: {job['title']}")
+                print(f"  Company: {job['company']}")
+                print(f"  Remote Type: {job['remote_type']}")
+                print(f"  Location: {job['location']}")
+                print(f"  URL: {job['url']}\n")

@@ -22,12 +22,12 @@ class BuiltinJobsParser:
 
     def _parse_html_body(self, html_body):
         soup = BeautifulSoup(html_body, 'html.parser')
-
-        jobs = []
-
-        # Find all job blocks
         job_elements = soup.find_all('td', style=lambda x: x and 'font-family:Verdana' in x)
 
+        if not job_elements:
+            return []
+
+        jobs = []
         for job_element in job_elements:
             job_info = self._get_job_info(job_element)
             if job_info:
@@ -36,7 +36,6 @@ class BuiltinJobsParser:
         return jobs
 
     def _get_job_info(self, job_element):
-        """Extract job information from a given job_element."""
 
         # Get the job URL
         a_tag = job_element.find('a', href=True)
