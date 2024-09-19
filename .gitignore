@@ -20,9 +20,10 @@ migrations/versions/*.pyc
 .DS_Store
 .idea/
 
-# Private and archived files
+# Private, data, and archived files
 private/
 zarchive/
+data/
 
 # Environment variables and token file
 .env
