@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from app.api.notion_integration import NotionJobInserter
 
 
 class BuiltinJobsParser:
@@ -28,10 +29,13 @@ class BuiltinJobsParser:
             return []
 
         jobs = []
+        notion_inserter = NotionJobInserter()
+
         for job_element in job_elements:
             job_info = self._get_job_info(job_element)
             if job_info:
                 jobs.append(job_info)
+                notion_inserter.insert_job(job_info)  # Insert job into Notion
 
         return jobs
 
@@ -61,19 +65,19 @@ class BuiltinJobsParser:
         location_spans = location_container.find_all('span', style=lambda x: x and 'vertical-align:middle' in x)
 
         # Initialize variables
-        remote_type = ''
+        workplace = ''
         location = ''
 
         # Assign values based on the number of spans found
         if len(location_spans) >= 1:
-            remote_type = location_spans[0].get_text(strip=True)
+            workplace = location_spans[0].get_text(strip=True)
         if len(location_spans) >= 2:
             location = location_spans[1].get_text(strip=True)
 
         return {
             'title': title,
             'company': company,
-            'remote_type': remote_type,
+            'workplace': workplace,
             'location': location,
             'url': job_url
         }

@@ -54,6 +54,9 @@ class POP3Client:
 
         subject = parsed_email.get('subject', 'No Subject')
 
+        # todo:  interpret sender and subject to
+        #        1) determine parser and 2) ensure it's a list of jobs
+
         # Use the specific body parser for email body content
         job_info_list = self.body_parser.parse_email(parsed_email)
         email_list.append({
@@ -68,6 +71,6 @@ class POP3Client:
             for job in email['job_info_list']:
                 print(f"  Job Title: {job['title']}")
                 print(f"  Company: {job['company']}")
-                print(f"  Remote Type: {job['remote_type']}")
+                print(f"  Workplace: {job['workplace']}")
                 print(f"  Location: {job['location']}")
                 print(f"  URL: {job['url']}\n")

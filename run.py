@@ -15,7 +15,7 @@ def main():
     # 2. Fetch emails
     emails = pop3_client.fetch_emails()
 
-    pop3_client.display_jobs(emails)
+    # pop3_client.display_jobs(emails)
 
     """
     # 3. Process emails
