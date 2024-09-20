@@ -1,6 +1,7 @@
 import os
 from notion_client import Client
 
+
 class NotionJobInserter:
     def __init__(self):
         # Load the Notion token from environment variables
