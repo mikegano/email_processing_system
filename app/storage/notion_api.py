@@ -1,12 +1,10 @@
-import os
 from notion_client import Client
 
-
-class NotionJobInserter:
-    def __init__(self):
-        # Load the Notion token from environment variables
-        self.notion_token = os.getenv("NOTION_TOKEN", "")
-        self.database_id = os.getenv("NOTION_DATABASE_ID", "")  # Store your database ID here
+class NotionClient:
+    def __init__(self, notion_config):
+        # Use the configuration passed into the class
+        self.notion_token = notion_config['token']
+        self.database_id = notion_config['database_id']
         self.notion = Client(auth=self.notion_token)
 
     def insert_job(self, job):
@@ -24,10 +22,9 @@ class NotionJobInserter:
             },
             "Company": {"rich_text": [{"text": {"content": job['company']}}]},
             "Location": {"rich_text": [{"text": {"content": job['location']}}]},
-            # Add Workplace select field
             "Workplace": {
                 "select": {
-                    "name": job['workplace']  # The workplace value should be 'Remote', 'Hybrid', or 'In Office'
+                    "name": job['workplace']  # 'Remote', 'Hybrid', or 'In Office'
                 }
             }
         }

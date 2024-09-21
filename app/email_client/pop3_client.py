@@ -1,9 +1,9 @@
 import poplib
 from email import parser as email_parser
-from app.parsers.email_parsers.builtin_email_parser import BuiltinJobsParser  # Import specific parsers
+from app.parsers.email_parsers.builtin_email_parser import BuiltInEmailParser
 
 
-class POP3Client:
+class POP3EmailClient:
     def __init__(self, config, email_type):
         """Connect to email server"""
         self.pop_server = config.get('POP_SERVER')
@@ -38,7 +38,7 @@ class POP3Client:
     def _get_body_parser(self, email_type):
         """Returns the correct parser based on email type."""
         if email_type == 'builtin_jobs':
-            return BuiltinJobsParser()
+            return BuiltInEmailParser()
         # Add more body parsers here if needed for other email types
         else:
             raise ValueError(f"No parser found for email type: {email_type}")

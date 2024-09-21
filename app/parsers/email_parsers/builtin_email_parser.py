@@ -1,8 +1,8 @@
 from bs4 import BeautifulSoup
-from app.storage.notion_api import NotionJobInserter
+from app.storage.notion_api import NotionClient
 
 
-class BuiltinJobsParser:
+class BuiltInEmailParser:
     """Parser for emails of type 'builtin_jobs'."""
 
     def parse_email(self, parsed_email):
@@ -29,7 +29,7 @@ class BuiltinJobsParser:
             return []
 
         jobs = []
-        notion_inserter = NotionJobInserter()
+        notion_inserter = NotionClient()
 
         for job_element in job_elements:
             job_info = self._get_job_info(job_element)

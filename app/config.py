@@ -3,38 +3,52 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+print("POP_SERVER:", os.getenv('POP_SERVER'))
+print("POP_PORT:", os.getenv('POP_PORT'))
 
 class Config:
     """Configuration class for loading environment variables."""
 
-    @staticmethod
-    def load_config():
-        """Load the configuration values from environment variables."""
-        config = {
-            'POP_SERVER': os.getenv('POP_SERVER'),
-            'POP_PORT': os.getenv('POP_PORT'),
-            'POP_USERNAME': os.getenv('POP_USERNAME'),
-            'POP_PASSWORD': os.getenv('POP_PASSWORD'),
+    def __init__(self):
+        # Email client configuration (pop3 settings)
+        self.email_client_config = {
+            'server': os.getenv('POP_SERVER'),
+            'port': os.getenv('POP_PORT'),
+            'username': os.getenv('POP_USERNAME'),
+            'password': os.getenv('POP_PASSWORD')
         }
 
-        # Perform checks for mandatory values
-        if not config['POP_SERVER']:
-            raise EnvironmentError("POP_SERVER environment variable is not set. "
-                                   "Please ensure it's defined in the .env file.")
+        # Notion configuration (notion settings)
+        self.notion_config = {
+            'token': os.getenv('NOTION_TOKEN'),
+            'database_id': os.getenv('NOTION_DATABASE_ID')
+        }
 
-        if not config['POP_PORT'] or not config['POP_PORT'].isdigit():
-            raise EnvironmentError("POP_PORT environment variable is either not set or invalid. "
-                                   "Please ensure it's a valid integer in the .env file.")
+        # Add email_type for easier management of email parsers
+        self.email_type = 'builtin_jobs'
 
-        if not config['POP_USERNAME']:
-            raise EnvironmentError("POP_USERNAME environment variable is not set. "
-                                   "Please ensure it's defined in the .env file.")
+        # Validation for mandatory fields
+        self._validate_config()
 
-        if not config['POP_PASSWORD']:
-            raise EnvironmentError("POP_PASSWORD environment variable is not set. "
-                                   "Please ensure it's defined in the .env file.")
+    def _validate_config(self):
+        """Validate that all required configuration variables are set."""
+        if not self.email_client_config['server']:
+            raise EnvironmentError("POP_SERVER environment variable is not set.")
 
-        # Convert POP_PORT to an integer after validation
-        config['POP_PORT'] = int(config['POP_PORT'])
+        if not self.email_client_config['port'].isdigit():
+            raise EnvironmentError("POP_PORT environment variable is invalid. It should be an integer.")
 
-        return config
+        if not self.email_client_config['username']:
+            raise EnvironmentError("POP_USERNAME environment variable is not set.")
+
+        if not self.email_client_config['password']:
+            raise EnvironmentError("POP_PASSWORD environment variable is not set.")
+
+        if not self.notion_config['token']:
+            raise EnvironmentError("NOTION_TOKEN environment variable is not set.")
+
+        if not self.notion_config['database_id']:
+            raise EnvironmentError("NOTION_DATABASE_ID environment variable is not set.")
+
+        # Convert port to an integer
+        self.email_client_config['port'] = int(self.email_client_config['port'])
