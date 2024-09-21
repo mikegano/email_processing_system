@@ -1,8 +1,8 @@
-from app.api.pop3_client import POP3Client
+from app.email_client.pop3_client import POP3Client
 # from app.services.email_processing_service import EmailProcessingService
 # from app.repository.db import setup_database_session
 # from app.repository.db import save_to_database
-from config.config import Config
+from app.config import Config
 
 
 def main():

@@ -1,6 +1,6 @@
 import poplib
 from email import parser as email_parser
-from app.parsers.builtin_jobs import BuiltinJobsParser  # Import specific parsers
+from app.parsers.email_parsers.builtin_email_parser import BuiltinJobsParser  # Import specific parsers
 
 
 class POP3Client:

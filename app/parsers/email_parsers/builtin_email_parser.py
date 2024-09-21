@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from app.api.notion_integration import NotionJobInserter
+from app.storage.notion_api import NotionJobInserter
 
 
 class BuiltinJobsParser:

@@ -1,6 +1,6 @@
 import unittest
-from app.api.pop3_client import POP3Client
-from config.config import Config
+from app.email_client.pop3_client import POP3Client
+from app.config import Config
 
 
 class TestPOP3Client(unittest.TestCase):
