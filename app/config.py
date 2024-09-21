@@ -25,7 +25,7 @@ class Config:
         }
 
         # Add email_type for easier management of email parsers
-        self.email_type = 'builtin_jobs'
+        # self.email_type = 'builtIn_jobs'
 
         # Validation for mandatory fields
         self._validate_config()

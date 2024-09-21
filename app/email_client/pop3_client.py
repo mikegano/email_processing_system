@@ -4,18 +4,17 @@ from app.parsers.email_parsers.builtin_email_parser import BuiltInEmailParser
 
 
 class POP3EmailClient:
-    def __init__(self, config, email_type):
-        """Connect to email server"""
-        self.pop_server = config.get('POP_SERVER')
-        self.pop_port = config.get('POP_PORT')
-        self.pop_username = config.get('POP_USERNAME')
-        self.pop_password = config.get('POP_PASSWORD')
+    def __init__(self, email_config, email_type):
+        """Connect to email server."""
+        self.server = email_config['server']
+        self.port = email_config['port']
+        self.username = email_config['username']
+        self.password = email_config['password']
 
         try:
-            print(f"server: {self.pop_server}, port: {self.pop_port}")
-            self.mailbox = poplib.POP3_SSL(self.pop_server, self.pop_port)
-            self.mailbox.user(self.pop_username)
-            self.mailbox.pass_(self.pop_password)
+            self.mailbox = poplib.POP3_SSL(self.server, self.port)
+            self.mailbox.user(self.username)
+            self.mailbox.pass_(self.password)
         except poplib.error_proto as e:
             raise ConnectionError(f"Failed to connect or authenticate: {e}")
 
