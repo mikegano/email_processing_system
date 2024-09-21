@@ -12,6 +12,7 @@ class POP3EmailClient:
         self.pop_password = config.get('POP_PASSWORD')
 
         try:
+            print(f"server: {self.pop_server}, port: {self.pop_port}")
             self.mailbox = poplib.POP3_SSL(self.pop_server, self.pop_port)
             self.mailbox.user(self.pop_username)
             self.mailbox.pass_(self.pop_password)
