@@ -34,3 +34,25 @@ class NotionClient:
             print(f"Job '{job['title']}' added to the Notion database.")
         except Exception as e:
             print(f"Error inserting job into Notion: {e}")
+
+    def job_exists(self, job):
+        """Checks if a job already exists in the Notion database."""
+        return False
+        """
+        # below is close, but should use ID instead of title
+        query = {
+            "filter": {
+                "property": "Title",
+                "text": {
+                    "contains": job['title']
+                }
+            }
+        }
+
+        try:
+            response = self.notion.databases.query(database_id=self.database_id, filter=query)
+            return response['results']
+        except Exception as e:
+            print(f"Error checking if job exists in Notion: {e}")
+            return False
+        """

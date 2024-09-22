@@ -28,7 +28,13 @@ class POP3EmailClient:
         email_list = []
         for i in range(1, num_messages + 1):
             print(f"Parsing email {i}...")
-            self._body_parse(email_list, i)
+            try:
+                raw_email = b"\n".join(self.mailbox.retr(i)[1])
+                parsed_email = email_parser.BytesParser().parsebytes(raw_email)
+                email_list.append(parsed_email)
+            except Exception as e:
+                print(f"Error retrieving or parsing email {i}: {e}")
+                return
         return email_list
 
     def logout(self):
@@ -54,9 +60,6 @@ class POP3EmailClient:
 
         subject = parsed_email.get('subject', 'No Subject')
 
-        # todo:  interpret sender and subject to
-        #        1) determine parser and 2) ensure it's a list of jobs
-
         # Use the specific body parser for email body content
         job_info_list = self.body_parser.parse(parsed_email)
         email_list.append({
@@ -65,7 +68,7 @@ class POP3EmailClient:
         })
 
     def display_jobs(self, emails):
-        """Displays job information for each email in a readable format."""
+        """Displays job information for troubleshooting purposes."""
         for email in emails:
             print(f"Subject: {email['subject']}")
             for job in email['job_info_list']:

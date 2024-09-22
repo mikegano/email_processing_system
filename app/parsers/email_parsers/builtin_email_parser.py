@@ -41,7 +41,6 @@ class BuiltInEmailParser(BaseParser):
             job_info = self._get_job_info(job_element)
             if job_info:
                 jobs.append(job_info)
-                self.notion_inserter.insert_job(job_info)  # Insert job into Notion
 
         return jobs
 
