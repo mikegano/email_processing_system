@@ -9,11 +9,11 @@ def main():
     config = Config()
 
     # Initialize clients using dependency injection
-    email_client = POP3EmailClient(config.email_client_config, 'builtin_jobs')
+    email_client = POP3EmailClient(config.email_client_config, 'builtin_jobs', config.notion_config)
     storage_client = NotionClient(config.notion_config)
 
     # Placeholder for future parsers (email/web parsers)
-    email_parsers = [BuiltInEmailParser()]  # Add more email parsers here later
+    email_parsers = [BuiltInEmailParser(config.notion_config)]  # Add more email parsers here later
     web_parsers = []  # Empty for now, add web parsers in the future
 
     # Initialize the email processor

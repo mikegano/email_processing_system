@@ -4,7 +4,7 @@ from app.parsers.email_parsers.builtin_email_parser import BuiltInEmailParser
 
 
 class POP3EmailClient:
-    def __init__(self, email_config, email_type):
+    def __init__(self, email_config, email_type, notion_config):
         """Connect to email server."""
         self.server = email_config['server']
         self.port = email_config['port']
@@ -18,7 +18,7 @@ class POP3EmailClient:
         except poplib.error_proto as e:
             raise ConnectionError(f"Failed to connect or authenticate: {e}")
 
-        self.body_parser = self._get_body_parser(email_type)
+        self.body_parser = self._get_body_parser(email_type, notion_config)
 
     def fetch_emails(self):
         """Fetches emails from the POP3 server and uses the appropriate parser."""
@@ -35,10 +35,10 @@ class POP3EmailClient:
         """Logs out of the POP3 server."""
         self.mailbox.quit()
 
-    def _get_body_parser(self, email_type):
+    def _get_body_parser(self, email_type, notion_config):
         """Returns the correct parser based on email type."""
         if email_type == 'builtin_jobs':
-            return BuiltInEmailParser()
+            return BuiltInEmailParser(notion_config)
         # Add more body parsers here if needed for other email types
         else:
             raise ValueError(f"No parser found for email type: {email_type}")
@@ -58,7 +58,7 @@ class POP3EmailClient:
         #        1) determine parser and 2) ensure it's a list of jobs
 
         # Use the specific body parser for email body content
-        job_info_list = self.body_parser.parse_email(parsed_email)
+        job_info_list = self.body_parser.parse(parsed_email)
         email_list.append({
             'subject': subject,
             'job_info_list': job_info_list  # Clarified to signify it's a list of jobs

@@ -1,11 +1,12 @@
 from bs4 import BeautifulSoup
 from app.storage.notion_api import NotionClient
+from app.parsers.base_parser import BaseParser
 
+class BuiltInEmailParser(BaseParser):
+    def __init__(self, notion_config):
+        self.notion_inserter = NotionClient(notion_config)
 
-class BuiltInEmailParser:
-    """Parser for emails of type 'builtin_jobs'."""
-
-    def parse_email(self, parsed_email):
+    def parse(self, parsed_email):
         if not parsed_email.is_multipart():
             return {}
 
@@ -14,6 +15,12 @@ class BuiltInEmailParser:
                 html_body = self._get_html_body(part)
                 return self._parse_html_body(html_body)
         return {}
+
+    def can_parse(self, email):
+        # Logic to determine if this parser can handle the given email.
+        # For example, you might check the subject line or sender.
+        # return "builtin_jobs" in email['subject'].lower()
+        return True
 
     def _is_html_part(self, part):
         return part.get_content_type() == "text/html"
@@ -29,13 +36,12 @@ class BuiltInEmailParser:
             return []
 
         jobs = []
-        notion_inserter = NotionClient()
 
         for job_element in job_elements:
             job_info = self._get_job_info(job_element)
             if job_info:
                 jobs.append(job_info)
-                notion_inserter.insert_job(job_info)  # Insert job into Notion
+                self.notion_inserter.insert_job(job_info)  # Insert job into Notion
 
         return jobs
 

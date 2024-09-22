@@ -3,9 +3,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-print("POP_SERVER:", os.getenv('POP_SERVER'))
-print("POP_PORT:", os.getenv('POP_PORT'))
-
 class Config:
     """Configuration class for loading environment variables."""
 
@@ -24,6 +21,7 @@ class Config:
             'database_id': os.getenv('NOTION_DATABASE_ID')
         }
 
+        # Below is hardcoded now in main.py  ...will need an enum somewhere, at some point
         # Add email_type for easier management of email parsers
         # self.email_type = 'builtIn_jobs'
 
