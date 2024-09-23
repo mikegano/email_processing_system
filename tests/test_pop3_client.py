@@ -1,9 +1,10 @@
 import unittest
-from app.email_client.pop3_client import POP3Client
-from app.config import Config
+from ..app.email_client.pop3_client import POP3Client
+from ..app.config import Config
 
 
 class TestPOP3Client(unittest.TestCase):
+    """ This is an example from ChatGPT and hasn't been tested yet. """
 
     def setUp(self):
         """Set up configuration and POP3Client before each test."""
