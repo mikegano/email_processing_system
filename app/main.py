@@ -1,10 +1,11 @@
-from config import Config
-from services.email_processor import EmailProcessor
-from email_client.pop3_client import POP3EmailClient
-from storage.notion_api import NotionClient
-from parsers.email_parsers.builtin_email_parser import BuiltInEmailParser
+from .config import Config
+from .services.email_processor import EmailProcessor
+from .email_client.pop3_client import POP3EmailClient
+from .storage.notion_api import NotionClient
+from .parsers.email_parsers.builtin_email_parser import BuiltInEmailParser
 
 def main():
+    print(f"name:{__name__}")
     # Load configuration
     config = Config()
 
@@ -13,7 +14,7 @@ def main():
     storage_client = NotionClient(config.notion_config)
 
     # Placeholder for future parsers (email/web parsers)
-    email_parsers = [BuiltInEmailParser(config.notion_config)]  # Add more email parsers here later
+    email_parsers = [BuiltInEmailParser(config.notion_config)]  # Add more email parsers here
     web_parsers = []  # Empty for now, add web parsers in the future
 
     # Initialize the email processor

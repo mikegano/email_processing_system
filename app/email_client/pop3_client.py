@@ -1,7 +1,6 @@
 import poplib
 from email import parser as email_parser
-from app.parsers.email_parsers.builtin_email_parser import BuiltInEmailParser
-
+from ..parsers.email_parsers.builtin_email_parser import BuiltInEmailParser
 
 class POP3EmailClient:
     def __init__(self, email_config, email_type, notion_config):

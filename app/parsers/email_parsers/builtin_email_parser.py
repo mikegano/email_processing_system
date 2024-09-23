@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
-from app.storage.notion_api import NotionClient
-from app.parsers.base_parser import BaseParser
+from ...storage.notion_api import NotionClient
+from ...parsers.base_parser import BaseParser
 
 class BuiltInEmailParser(BaseParser):
     def __init__(self, notion_config):

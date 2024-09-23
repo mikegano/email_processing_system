@@ -22,7 +22,7 @@ class EmailProcessor:
                     # Check for duplicates and insert into storage
                     # if not self.storage_client.job_exists(job):
                     self.storage_client.insert_job(job)
-                
+
                 # Optionally scrape additional details from web pages
                 # web_parser = self._select_web_parser(job.url)
                 # if web_parser:
