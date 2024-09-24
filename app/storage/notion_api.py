@@ -27,33 +27,38 @@ class NotionClient:
                 "select": {
                     "name": job.workplace  # 'Remote', 'Hybrid', or 'In Office'
                 }
+            },
+            "Job URL": {
+                "url": job.url
             }
         }
 
         try:
-            self.notion.pages.create(parent={"database_id": self.database_id}, properties=new_page)
+            self.notion.pages.create(
+                parent={"database_id": self.database_id}, properties=new_page
+            )
             print(f"Job '{job.title}' added to the Notion database.")
         except Exception as e:
             print(f"Error inserting job into Notion: {e}")
 
     def job_exists(self, job: Job):
         """Checks if a job already exists in the Notion database."""
-        return False
-        """
-        # below is close, but should use ID instead of title
+
         query = {
             "filter": {
-                "property": "Title",
-                "text": {
-                    "contains": job['title']
+                "property": "Job URL",  # Must match the property name in Notion
+                "url": {
+                    "equals": job.url
                 }
             }
         }
 
         try:
-            response = self.notion.databases.query(database_id=self.database_id, filter=query)
-            return response['results']
+            response = self.notion.databases.query(
+                database_id=self.database_id, **query  # Unpack the query dictionary
+            )
+            print(f"Checking for dups. Found {len(response['results'])} results.")
+            return len(response['results']) > 0
         except Exception as e:
             print(f"Error checking if job exists in Notion: {e}")
             return False
-        """
