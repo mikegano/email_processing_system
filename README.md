@@ -127,10 +127,9 @@ We welcome contributions to this project! Here's how you can help:
 
 - [ ] Don't add listing if they're duplicates.
 - [ ] Add more job listing sites (and their parsers).
-- [ ] Add support for IMAP email retrieval.
-- [ ] Implement OAuth 2.0 support for Gmail.
-- [ ] Add support for IMAP email retrieval.
 - [ ] Integrate AI for generating the parsing files.
+- [ ] Pull the job descriptions (e.g. into Notion).
+- [ ] Implement OAuth 2.0 support for Gmail.
 - [ ] Develop a web interface for configuration and monitoring.
 
 ## Support
