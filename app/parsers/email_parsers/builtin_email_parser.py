@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
-from app.storage.notion_api import NotionClient
-from app.parsers.base_parser import BaseParser
+from ...storage.notion_api import NotionClient
+from ...parsers.base_parser import BaseParser
+from ...models.job import Job
 
 class BuiltInEmailParser(BaseParser):
     def __init__(self, notion_config):
@@ -33,7 +34,9 @@ class BuiltInEmailParser(BaseParser):
         company_element = job_element.find('div', style=lambda x: x and 'font-size:16px' in x)
 
         # Find the parent div that contains the location info
-        location_container = job_element.find('div', style=lambda x: x and 'margin-bottom:4px;font-size:12px' in x)
+        # location_container = job_element.find('div', style=lambda x: x and 'margin-bottom:4px;font-size:12px' in x)
+        container_match = 'margin-bottom:4px;font-size:12px'
+        location_container = job_element.find('div', style=lambda x: x and container_match in x)
 
         if not title_element or not company_element or not location_container:
             return None
@@ -42,7 +45,9 @@ class BuiltInEmailParser(BaseParser):
         company = company_element.get_text(strip=True)
 
         # Extract the location information from all relevant spans
-        location_spans = location_container.find_all('span', style=lambda x: x and 'vertical-align:middle' in x)
+        # location_spans = location_container.find_all('span', style=lambda x: x and 'vertical-align:middle' in x)
+        spans_match = 'vertical-align:middle'
+        location_spans = location_container.find_all('span', style=lambda x: x and spans_match in x)
 
         workplace = ''
         location = ''
@@ -53,10 +58,10 @@ class BuiltInEmailParser(BaseParser):
         if len(location_spans) >= 2:
             location = location_spans[1].get_text(strip=True)
 
-        return {
-            'title': title,
-            'company': company,
-            'workplace': workplace,
-            'location': location,
-            'url': job_url
-        }
+        return Job(
+            title=title,
+            company=company,
+            location=location,
+            url=job_url,
+            workplace=workplace
+        )

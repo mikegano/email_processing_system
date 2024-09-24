@@ -1,12 +1,12 @@
 # app/models/job.py
 
 class Job:
-    def __init__(self, title, company, location, url, workplace_type):
+    def __init__(self, title, company, location, url, workplace):
         self.title = title
         self.company = company
         self.location = location
         self.url = url
-        self.workplace_type = workplace_type
+        self.workplace = workplace
         # Additional details
         self.description = None
         self.requirements = None
