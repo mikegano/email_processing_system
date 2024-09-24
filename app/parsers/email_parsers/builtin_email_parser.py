@@ -1,5 +1,8 @@
+# import logging
+
 from bs4 import BeautifulSoup
 from email.utils import parseaddr
+
 from ...storage.notion_api import NotionClient
 from ...parsers.base_parser import BaseParser
 from ...models.job import Job
@@ -24,7 +27,7 @@ class BuiltInEmailParser(BaseParser):
             return False
 
         # Check if the subject contains "You Have New Tech Job Matches"
-        if 'You Have New Tech Job Matches' not in subject:
+        if 'you have new tech job matches' not in subject.lower():
             print(f"Skipping email with subject: {subject}")
             return False
 
