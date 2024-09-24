@@ -46,7 +46,7 @@ class NotionClient:
 
         query = {
             "filter": {
-                "property": "Job URL",  # Must match the property name in Notion
+                "property": "Job URL",
                 "url": {
                     "equals": job.url
                 }

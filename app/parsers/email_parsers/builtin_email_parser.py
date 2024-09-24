@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from email.utils import parseaddr
 from ...storage.notion_api import NotionClient
 from ...parsers.base_parser import BaseParser
 from ...models.job import Job
@@ -6,6 +7,28 @@ from ...models.job import Job
 class BuiltInEmailParser(BaseParser):
     def __init__(self, notion_config):
         self.notion_inserter = NotionClient(notion_config)
+
+    def can_parse(self, email):
+        """Determine if this parser can handle the given email."""
+        """TODO: handle forwarded emails"""
+
+        from_address = email.get('From', '')
+        subject = email.get('Subject', '')
+
+        # Parse the email address from the 'From' header
+        name, addr = parseaddr(from_address)
+
+        # Check if the email is from 'support@builtin.com'
+        if addr.lower() != 'support@builtin.com':
+            print(f"Skipping email from {addr}")
+            return False
+
+        # Check if the subject contains "You Have New Tech Job Matches"
+        if 'You Have New Tech Job Matches' not in subject:
+            print(f"Skipping email with subject: {subject}")
+            return False
+
+        return True
 
     def _parse_html_body(self, html_body):
         """Parse the HTML body for job information."""

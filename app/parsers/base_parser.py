@@ -11,6 +11,11 @@ class BaseParser(ABC):
         """Extract job information from an HTML element."""
         pass
 
+    @abstractmethod
+    def can_parse(self, email):
+        """Determine if this parser can handle the given email."""
+        pass
+
     def parse(self, parsed_email):
         """Parse the email content."""
         if not parsed_email.is_multipart():
@@ -21,11 +26,6 @@ class BaseParser(ABC):
                 html_body = self._get_html_body(part)
                 return self._parse_html_body(html_body)
         return {}
-
-    def can_parse(self, email):
-        """Determine if this parser can handle the given email."""
-        # Generic logic for determining if an email can be parsed
-        return True  # Subclasses can override with specific logic if needed
 
     def _is_html_part(self, part):
         """Check if the email part is HTML."""
