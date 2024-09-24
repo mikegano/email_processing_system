@@ -3,7 +3,7 @@
 A Python-based email processing system designed to handle, filter, and process incoming emails from multiple sources. Customize scraping and data extraction to automate your email workflows and integrate seamlessly with tools like Notion.
 
 ![GitHub issues](https://img.shields.io/github/issues/mikegano/email_processing_system)
-![license](https://img.shields.io/github/license/mikegano/email_processing_system)
+![license](https://img.shields.io/github/license/mikegano/email_processing_system?cachebuster=1)
 
 ## Features
 
