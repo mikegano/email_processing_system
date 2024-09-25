@@ -1,4 +1,6 @@
-# app/services/email_processor.py
+import logging
+
+logger = logging.getLogger(__name__)
 
 class EmailProcessor:
     def __init__(self, email_client, storage_client, email_parsers, web_parsers):
@@ -11,23 +13,28 @@ class EmailProcessor:
         emails = self.email_client.fetch_emails()
 
         for email in emails:
+            logger.info("Processing email: %s", email.get('Subject'))
             parser = self._select_email_parser(email)
 
-            if parser:
-                jobs = parser.parse(email)
+            if not parser:
+                logger.warning("No parser found for email")
+                continue
 
-                for job in jobs:
-                    self._save_raw_html(job)
+            logger.info("Using parser: %s", parser.__class__.__name__)
+            jobs = parser.parse(email)
 
-                    # Check for duplicates and insert into storage
-                    if not self.storage_client.job_exists(job):
-                        self.storage_client.insert_job(job)
+            for job in jobs:
+                self._save_raw_html(job)
 
-                # Optionally scrape additional details from web pages
-                # web_parser = self._select_web_parser(job.url)
-                # if web_parser:
-                #     additional_details = web_parser.parse(job.url)
-                #     job.update_details(additional_details)
+                # Check for duplicates and insert into storage
+                if not self.storage_client.job_exists(job):
+                    self.storage_client.insert_job(job)
+
+            # Optionally scrape additional details from web pages
+            # web_parser = self._select_web_parser(job.url)
+            # if web_parser:
+            #     additional_details = web_parser.parse(job.url)
+            #     job.update_details(additional_details)
 
         self.email_client.logout()
 

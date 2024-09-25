@@ -1,9 +1,12 @@
+import logging
+
 from notion_client import Client
 from ..models.job import Job
 
+logger = logging.getLogger(__name__)
+
 class NotionClient:
     def __init__(self, notion_config):
-        # Use the configuration passed into the class
         self.notion_token = notion_config['token']
         self.database_id = notion_config['database_id']
         self.notion = Client(auth=self.notion_token)
@@ -37,9 +40,9 @@ class NotionClient:
             self.notion.pages.create(
                 parent={"database_id": self.database_id}, properties=new_page
             )
-            print(f"Job '{job.title}' added to the Notion database.")
+            logger.info(f"Job '{job.title}' added to the Notion database.")
         except Exception as e:
-            print(f"Error inserting job into Notion: {e}")
+            logger.error(f"Error inserting job into Notion: {e}")
 
     def job_exists(self, job: Job):
         """Checks if a job already exists in the Notion database."""
@@ -57,8 +60,8 @@ class NotionClient:
             response = self.notion.databases.query(
                 database_id=self.database_id, **query  # Unpack the query dictionary
             )
-            print(f"Checking for dups. Found {len(response['results'])} results.")
+            logger.info(f"Checking for duplicates. Found {len(response['results'])} results.")
             return len(response['results']) > 0
         except Exception as e:
-            print(f"Error checking if job exists in Notion: {e}")
+            logger.error(f"Error checking if job exists in Notion: {e}")
             return False

@@ -1,3 +1,5 @@
+import logging
+
 from .config import Config
 from .services.email_processor import EmailProcessor
 from .email_client.pop3_client import POP3EmailClient
@@ -5,6 +7,11 @@ from .storage.notion_api import NotionClient
 from .parsers.email_parsers.builtin_email_parser import BuiltInEmailParser
 
 def main():
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    )
+
     config = Config()
 
     email_client = POP3EmailClient(config.email_client_config)
