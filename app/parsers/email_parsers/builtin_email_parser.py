@@ -41,12 +41,23 @@ class BuiltInEmailParser(BaseParser):
 
     def _parse_html_body(self, html_body):
         """Parse the HTML body for job information."""
-        # Save the HTML body to a file
-        with open('email_body.html', 'w', encoding='utf-8') as f:
-            f.write(html_body)
-
         soup = BeautifulSoup(html_body, 'html.parser')
-        job_elements = soup.find_all('td', style=lambda x: x and 'font-family:Verdana' in x)
+
+        # Find the <tr> element with id="job1"
+        job_table_row = soup.find('tr', id='job1')
+        if not job_table_row:
+            logger.warning("No job table found in email.")
+            return []
+
+        # Find the inner table containing job postings
+        inner_table = job_table_row.find('table')
+        if not inner_table:
+            logger.warning("No inner job table found in email.")
+            return []
+
+        # Now find all <tr> elements within the inner table
+        job_elements = inner_table.find_all('td', style=lambda x: x and 'font-family:Verdana' in x)
+        logger.debug(f"Found {len(job_elements)} job rows.")
 
         if not job_elements:
             logger.warning("No job elements found in email.")

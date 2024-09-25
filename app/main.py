@@ -7,10 +7,8 @@ from .storage.notion_api import NotionClient
 from .parsers.email_parsers.builtin_email_parser import BuiltInEmailParser
 
 def main():
-    logging.basicConfig(
-        level=logging.DEBUG,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    )
+    # Logging options: DEBUG, INFO, WARNING, ERROR, CRITICAL
+    logging.basicConfig(level=logging.WARNING, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
     config = Config()
 

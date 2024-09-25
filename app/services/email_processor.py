@@ -13,11 +13,11 @@ class EmailProcessor:
         emails = self.email_client.fetch_emails()
 
         for email in emails:
-            logger.info("Processing email: %s", email.get('Subject'))
+            logger.info("Processing email (%s): %s", email.get('Date'), email.get('Subject'))
             parser = self._select_email_parser(email)
 
             if not parser:
-                logger.warning("No parser found for email")
+                logger.warning("No parser found for email (%s): %s", email.get('Date'), email.get('Subject'))
                 continue
 
             logger.info("Using parser: %s", parser.__class__.__name__)
@@ -26,7 +26,6 @@ class EmailProcessor:
             for job in jobs:
                 self._save_raw_html(job)
 
-                # Check for duplicates and insert into storage
                 if not self.storage_client.job_exists(job):
                     self.storage_client.insert_job(job)
 
