@@ -12,7 +12,7 @@ class EmailProcessor:
     def process_emails(self):
         emails = self.email_client.fetch_emails()
 
-        for email in emails:
+        for index, email in enumerate(emails, start=1):
             logger.info("Processing email (%s): %s", email.get('Date'), email.get('Subject'))
             parser = self._select_email_parser(email)
 
@@ -24,8 +24,6 @@ class EmailProcessor:
             jobs = parser.parse(email)
 
             for job in jobs:
-                self._save_raw_html(job)
-
                 if not self.storage_client.job_exists(job):
                     self.storage_client.insert_job(job)
 
@@ -34,6 +32,18 @@ class EmailProcessor:
             # if web_parser:
             #     additional_details = web_parser.parse(job.url)
             #     job.update_details(additional_details)
+
+            if len(jobs) > 0:
+                logger.info(f"Found {len(jobs)} job(s), archiving email({index}): {email.get('Message-ID')}")
+
+                # Use the save_email method, which now returns a boolean indicating success
+                save_success = self.email_client.save_email(email)
+
+                if save_success:
+                    logger.info(f"Email ({index}) saved successfully, proceeding to delete from server.")
+                    self.email_client.delete_email(index)
+                else:
+                    logger.error(f"Failed to save email ({index}), skipping deletion.")
 
         self.email_client.logout()
 
@@ -48,7 +58,3 @@ class EmailProcessor:
             if parser.can_parse(url):
                 return parser
         return None
-
-    def _save_raw_html(self, job):
-        # Implement logic to save raw HTML snippets
-        pass

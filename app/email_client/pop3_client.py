@@ -1,3 +1,5 @@
+import os
+import time
 import logging
 import poplib
 from email import parser as email_parser
@@ -37,6 +39,36 @@ class POP3EmailClient:
                 logger.error(f"Error retrieving or parsing email {i}: {e}")
                 continue
         return email_list
+
+    def save_email(self, email):
+        """Save email to the parsed_email folder with a timestamped filename."""
+        try:
+            # Get the current timestamp to use as a filename
+            timestamp = time.strftime("%Y%m%d_%H%M%S")
+
+            # Construct the filename using the timestamp
+            email_file_name = f"{timestamp}.eml"
+
+            # Adjust the file path
+            email_file_path = os.path.join(os.path.dirname(__file__), "../../data/parsed_emails", email_file_name)
+
+            # Write the email content to the file
+            with open(email_file_path, 'w') as email_file:
+                email_file.write(email.as_string())
+                logger.info(f"Email saved successfully as {email_file_name}")
+
+            return True
+        except Exception as e:
+            logger.error(f"Failed to save email: {e}")
+            return False
+
+    def delete_email(self, index):
+        """Deletes an email from the POP3 server by index."""
+        try:
+            self.mailbox.dele(index)
+            logger.info(f"Email {index} successfully deleted from the server.")
+        except Exception as e:
+            logger.error(f"Failed to delete email {index}: {e}")
 
     def logout(self):
         """Logs out of the POP3 server."""

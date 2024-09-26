@@ -8,7 +8,7 @@ from .parsers.email_parsers.builtin_email_parser import BuiltInEmailParser
 
 def main():
     # Logging options: DEBUG, INFO, WARNING, ERROR, CRITICAL
-    logging.basicConfig(level=logging.WARNING, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
     config = Config()
 
